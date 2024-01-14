@@ -1,0 +1,104 @@
+**********SESSION STARTS***********
+
+1.what are cookies?
+-- these are client side stored data that are passed to the server at every request
+-- once its been set clinet automatically return the cokkies to the website with request that he makes
+-- the server could also send request to modeify, add or delete the cokkie, since clinet browser aware of them they are considered less secure
+
+2.what are sessions?
+-- these are server side means of storing data that can be accessed through multiple requests, these data stored by either files, caches or databases
+-- in sessions data not stored in client machine
+-- since the clinets/browsers are not aware of the sessions the are considered secure and canot manulpulate
+-- the session framework store or retrive arbitary data on per site visitor basis
+-- By default django stores session in your database(IT RECOMONDED TO MAKEMIGRATIONS AND MIGRATE)
+-- should have add in session middlewares(django.contrib.middleware.sessionmiddleware) 
+
+3. why do we need sessions and cokkies?
+-- when seding requests and receving responses through browsers, HTTP  is used HTTP(hyoertext transfer protocol) is a stateless request protocol this means that the  browser doesnot contain any information about old requests, how than could we able to persist values we do not want the user to always provide to us as this may be retarding and reduce user experience,this is were sessions and cookes play very important role
+
+4.diffrence bw cokkies and session
+____________________________________________________________________________________________
+| -----cookies---------------------------------|--------sessions-----------------           |
+|___________________________________________________________________________________________|
+|1.they stored in client browser/machine       | They stored in server                      |
+|2.expiry date should be specify               | They get distroyed after the browser closes|
+|3.They considered less secure                 | They considered more secure                |
+|4.should never be used sesitive informations  | could be used to sensitive informations    |
+|___________________________________________________________________________________________|
+
+1.types of session?
+file based session:
+-- to use file based session set SESSION_ENGINE seetings "django.contrib.session.backend.file"
+-- and also set file path --> SESSION_FILE_PATH to Requarued location
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = '/'
+
+cookie based session:
+-- to use cookie based session set SESSION_ENGINE seetings "django.contrib.session.backend.signed_cookies"
+-- the session data will be stored using django tools for cryphtographic signing and the secret key settings
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies"
+
+
+note:
+  when session middleware is activated  each http request the first object the first argument to any django view function will have a session attribute , which is a dictionary like object
+
+Note: Default expire date of session is 2 weeks(we can change)
+
+1.set Item
+-- request.session['key'] = value
+
+
+2.get Item
+-- request.session['key']
+--request.session.get('key')
+
+3.del Item
+-- del request.session['key']  # if not key it will raise key error
+
+4.contains
+-- 'key' in request.session
+
+
+session method
+----------------
+1.keys() --> it return view objects that display a list of all the keys in dictionary
+
+2.items() --> this methods return session key with value pairs
+
+3.clear() --> clearing session
+
+4.setdefault() -- >its return value of a key if key already avalibale else it will create new key value pair
+
+5.flush() -->it delets the current session data from the session and deletes the session cookie, this is used if you want to ensure that the previous session data canot be accessed again from users browser
+eg: logout() function
+
+6.get_session_cookie_age() -->it returns age of session cookie in seconds
+
+7.set_expiry(value) -- > it sets the expiration time for the session
+--you can pass number of diffrent values
+
+1--> if value is a intiger it expires on seconds
+        request.session.set_expiry(300)
+
+2--> if value is datetime or timedelta the sesion expires on particular date wise but should use serialize like first datetime than timedelta
+
+3--> if you set "0" it expires on after browser closing
+
+4--> if value is None --> than it follows global expire policy
+
+
+8.get_expiry_age() --> it return the number of seconds until this session expires
+
+9. get_expiry_at_browser_close() --> True or False
+
+10.clear_expired() -->this removes expired session from the sesion store this class method is called clear sessions
+
+
+11.test_cookie_worked() -> test weather browser supports to set cookies 
+12.set_test_cookie() --> testing creating of test-cookie
+13.delete_test_cookie() --> deleting test cookie
+
+
+-->session setting

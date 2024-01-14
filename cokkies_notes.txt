@@ -1,0 +1,106 @@
+1.what are cookies?
+-- these are client side stored data that are passed to the server at every request
+-- once its been set clinet automatically return the cokkies to the website with request that he makes
+-- the server could also send request to modeify, add or delete the cokkie, since clinet browser aware of them they are considered less secure
+
+2.what are sessions?
+-- these are server side means of storing data that can be accessed through multiple requests, these data stored by either files, caches or databases
+-- since the clinets/browsers are not aware of the sessions the are considered secure and canot manulpulate
+-- in session data not stored in client machine
+-- By default django stores session in your database(IT RECOMONDED TO MAKEMIGRATIONS AND MIGRATE)
+-- should have add in session middlewares(django.contrib.middleware.sessionmiddleware) 
+
+3. why do we need sessions and cokkies?
+-- when seding requests and receving responses through browsers, HTTP  is used HTTP(hyoertext transfer protocol) is a stateless request protocol this means that the  browser doesnot contain any information about old requests, how than could we able to persist values we do not want the user to always provide to us as this may be retarding and reduce user experience,this is were sessions and cookes play very important role
+
+4.diffrence bw cokkies and session
+____________________________________________________________________________________________
+| -----cookies---------------------------------|--------sessions-----------------           |
+|___________________________________________________________________________________________|
+|1.they stored in client browser/machine       | They stored in server                      |
+|2.expiry date should be specify               | They get distroyed after the browser closes|
+|3.They considered less secure                 | They considered more secure                |
+|4.should never be used sesitive informations  | could be used to sensitive informations    |
+|___________________________________________________________________________________________|
+
+
+5.setting cookies
+-- set_cokkies(key='', value='', max_age=9, expires=None, path='/',domain=None,secure=False, httponly=False, samesite=False)
+
+eg:
+def set_cokkies(request):
+    response = render(request, 'index.html')
+
+    # to make cookie expire after 2 days
+    expires = 
+    response.set_cookie(
+        # key='name',
+        # value='patil',
+
+        key='address',
+        value='raichur',
+
+        # to prevent acces cookie from clinet side javascript
+        httponly=True 
+
+        # expires in seconds by default browser close
+        max_age = 9   
+
+       # from datetime import datetime, timedelta and its expiring time of cokkieset set in days
+        expires= datetime.now() + timedelta(days=2)
+
+        # only trusted connection allows its does not allow other to manipulate cookie
+        secure=True
+
+        #use samesite='strict' or 'lax' to ristrict browser to not send this cokkie when permorforming cross-origin requests
+        sameiste='lax'
+
+        to send cokkuies to cross domain
+        domain='anydomain.com' 
+
+    )
+
+    return response
+
+6. get_cookies --> request.COOKIES.get('key', 'default')
+def get_cookie(request):
+    name = request.COOKIES.get('name', 'Default Value')
+    address = request.COOKIES.get('address', 'Default Value')
+
+    cookie_details = {
+        'name': name,
+        'address': address
+    }
+
+    return render(request, 'index.html', cookie_details)
+
+7.update cokkie
+
+def update_cookie(request):
+    response = render(request, 'index.html')
+    response.set_cookie(key='profile', value='active')
+    return response
+
+
+7. delete cookies  --> delete_cookie('key')
+
+def delete_cookie(request):
+    response = render(request, 'index.html')
+    response.delete_cookie('profile')
+    return response
+
+8 --security issue---
+-- can missuse client cookie_details
+-- can track user
+-- client can delete and minipulate cokkies
+
+9.how test cokkie in django
+
+note1:
+-- RFC6265 states that user agents should support cookies of least 4096 bytes
+
+note2:
+-- when you set two cokkies with same key the old key and value replace with new key,value else the new key values appends
+
+
+

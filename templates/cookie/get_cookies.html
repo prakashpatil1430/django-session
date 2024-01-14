@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+
+    <h2>Cookies and sessions</h2>
+    <hr />
+    <h1>Name : {{name}}</h1>
+    <h2>address : {{address}}</h2>
+    <h3>city: {{city}}</h3>
+    <h4>profile : {{profile}}</h4>
+    
+    <hr />
+
+    <h2>to get all cookies</h2>
+    {% for key, value in all_cookies.items  %}
+      <li>{{key}}--{{value}}</li>
+    {% endfor %}
+  </body>
+</html>
